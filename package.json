@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "react-native start"
+    "start": "haul start"
   },
   "dependencies": {
     "react": "16.9.0",
@@ -18,6 +18,9 @@
     "@babel/core": "7.5.5",
     "@babel/plugin-proposal-decorators": "^7.4.4",
     "@babel/runtime": "7.5.5",
+    "@haul-bundler/babel-preset-react-native": "^0.11.0",
+    "@haul-bundler/cli": "^0.11.0",
+    "@haul-bundler/preset-0.60": "^0.11.0",
     "@types/node": "^12.7.2",
     "@types/react": "16.9.2",
     "@types/react-native": "0.60.6",
