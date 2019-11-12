@@ -39,23 +39,17 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   async componentDidMount() {
-    console.log("Calling Creating connection");
-
-    // const words = await DbHelper.loadAllFromCatalog();
-    const allWords = await DbHelper.createConnection();
-    console.log("Accessing connection");
-
-    const words = await allWords.manager.find(Dictionary);
-    this.setState({
-      allWords: words,
-      words: words.slice(0, 15),
-      isLoaded: true
+    const allWords = await DbHelper.initDatabase();
+    allWords.manager.find(Dictionary).then(words => {
+      this.setState({
+        allWords: words,
+        words: words.slice(0, 15),
+        isLoaded: true
+      });
     });
   }
 
-  componentWillUnmount() {
-    // DbHelper.closeConnection();
-  }
+  componentWillUnmount() {}
 
   get wordList() {
     const { words } = this.state;
@@ -89,42 +83,9 @@ class App extends React.Component<AppProps, AppState> {
     });
   }
 
-  async handleSubmit() {
-    // const words = await DbHelper.wordSearch(this.state.currentQuery);
-    // this.setState({
-    //   words: words
-    // });
-  }
+  async handleSubmit() {}
 
-  async fetchNext(event: NativeSyntheticEvent<NativeScrollEvent>) {
-    const { currentY, words } = this.state;
-    const {layoutMeasurement, contentOffset, contentSize} = event.nativeEvent;
-    const paddingToBottom = 20;
-    const isAtBottom = layoutMeasurement.height + contentOffset.y >=
-      contentSize.height - paddingToBottom;
-    
-    // if(isAtBottom) {
-    //   let newWords = await DbHelper.loadAmountFromCatalog(
-    //     currentY - 5,
-    //     20
-    //   );
-
-    //   this.setState({
-    //     currentY: currentY + 15,
-    //     words: newWords
-    //   });
-    // } else if(contentOffset.y < 10){
-    //   let newWords = await DbHelper.loadAmountFromCatalog(
-    //     currentY - 20,
-    //     20
-    //   );
-
-    //   this.setState({
-    //     currentY: currentY - 20,
-    //     words: newWords
-    //   });
-    // }
-  }
+  async fetchNext(event: NativeSyntheticEvent<NativeScrollEvent>) {}
 
   render() {
     return (

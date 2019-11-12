@@ -1,17 +1,25 @@
 {
   "compilerOptions": {
-    "lib": ["es5", "es6"],
-    "target": "es6",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "es2015",
+    "lib": ["es6"],
+    "allowJs": false,
     "jsx": "react-native",
+    "noEmit": true,
+    "isolatedModules": true,
     "strict": true,
-    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "moduleResolution": "node",
-    "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "sourceMap": true,
-    "allowJs": true
-  }
+    "emitDecoratorMetadata": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "inlineSourceMap": true,
+    "skipLibCheck": true
+  },
+  "exclude": ["node_modules", "babel.config.js", "metro.config.js"]
 }

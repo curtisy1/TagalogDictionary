@@ -1,6 +1,6 @@
 import { BaseEntity, Column, Entity, Index } from "typeorm";
 
-@Entity("")
+@Entity("dictionary")
 @Index("word_index", ["word"])
 export class dictionary extends BaseEntity {
   @Column("integer", {

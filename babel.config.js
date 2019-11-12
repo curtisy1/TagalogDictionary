@@ -1,6 +1,11 @@
 module.exports = {
-  "presets": ["module:@haul-bundler/babel-preset-react-native"],
-  "plugins": [
-    ["@babel/plugin-proposal-decorators", { "legacy": true }]
+  presets: ["module:metro-react-native-babel-preset"],
+  plugins: [
+    [
+      "@babel/plugin-proposal-decorators",
+      {
+        legacy: true
+      }
+    ]
   ]
 };

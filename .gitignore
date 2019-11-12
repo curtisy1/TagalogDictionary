@@ -29,6 +29,7 @@ build/
 .gradle
 local.properties
 *.iml
+android/app/.settings
 
 # Visual Studio Code
 #
@@ -39,6 +40,9 @@ local.properties
 node_modules/
 npm-debug.log
 yarn-error.log
+.yarn
+.yarnrc
+.pnp.js
 
 # BUCK
 buck-out/
