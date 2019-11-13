@@ -2,7 +2,7 @@ import { BaseEntity, Column, Entity, Index } from "typeorm";
 
 @Entity("dictionary")
 @Index("word_index", ["word"])
-export class dictionary extends BaseEntity {
+export class Dictionary extends BaseEntity {
   @Column("integer", {
     nullable: false,
     primary: true,
