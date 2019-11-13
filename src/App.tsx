@@ -1,10 +1,9 @@
 import React, { Fragment } from "react";
 import {
   SafeAreaView,
-  ScrollView,
   Text,
-  NativeSyntheticEvent,
-  NativeScrollEvent
+  FlatList,
+  ListRenderItem
 } from "react-native";
 import { Searchbar, List } from "react-native-paper";
 
@@ -49,7 +48,9 @@ class App extends React.Component<AppProps, AppState> {
     });
   }
 
-  componentWillUnmount() {}
+  async componentWillUnmount() {
+    await DbHelper.closeDatabase();
+  }
 
   get wordList() {
     const { words } = this.state;
@@ -77,6 +78,29 @@ class App extends React.Component<AppProps, AppState> {
     return renderedList;
   }
 
+  renderWordList({item}: {item: Dictionary}) {
+    return (
+      <List.Accordion title={item.word}>
+      {!!item.englishDefinition && (
+        <Text>{`English Definition: ${item.englishDefinition}`}</Text>
+      )}
+      {!!item.l2Definition && (
+        <Text>{`L2 Definition: ${item.l2Definition}`}</Text>
+      )}
+      {!!item.notes && <Text>{`Notes: ${item.notes}`}</Text>}
+      {!!item.examples && (
+        <Text>{`Examples: ${item.examples}`}</Text>
+      )}
+      {!!item.activeVerb && (
+        <Text>{`Active Verb: ${item.activeVerb}`}</Text>
+      )}
+      {!!item.passiveVerb && (
+        <Text>{`Passive Verb: ${item.passiveVerb}`}</Text>
+      )}
+    </List.Accordion>
+    );
+  }
+
   handleSearchChange(query: string) {
     this.setState({
       currentQuery: query
@@ -85,25 +109,25 @@ class App extends React.Component<AppProps, AppState> {
 
   async handleSubmit() {}
 
-  async fetchNext(event: NativeSyntheticEvent<NativeScrollEvent>) {}
+  async fetchNext(info: {distanceFromEnd: number}) {}
 
   render() {
     return (
       this.state.isLoaded && (
         <Fragment>
           <SafeAreaView>
-            <ScrollView
-              contentInsetAdjustmentBehavior="automatic"
-              onScroll={this.fetchNext}
-            >
-              <Searchbar
-                placeholder="Search"
-                onChangeText={this.handleSearchChange}
-                onSubmitEditing={this.handleSubmit}
-                value={this.state.currentQuery}
-              />
-              <List.Section>{this.wordList}</List.Section>
-            </ScrollView>
+            <Searchbar
+              placeholder="Search"
+              onChangeText={this.handleSearchChange}
+              onSubmitEditing={this.handleSubmit}
+              value={this.state.currentQuery}
+            />
+            <FlatList
+              data={this.state.allWords}
+              renderItem={this.renderWordList}
+              keyExtractor={item => item.Id.toString()}
+              onEndReached={this.fetchNext}
+            />
           </SafeAreaView>
         </Fragment>
       )
