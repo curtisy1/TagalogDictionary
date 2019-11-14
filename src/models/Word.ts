@@ -11,10 +11,10 @@ export class Dictionary extends BaseEntity {
   Id: number;
 
   @Column("text", {
-    nullable: true,
+    nullable: false,
     name: "word"
   })
-  word: string | null;
+  word: string;
 
   @Column("text", {
     nullable: true,

@@ -1,14 +1,23 @@
 import React, { Fragment } from "react";
-import { SafeAreaView, Text, FlatList } from "react-native";
-import { Searchbar, List } from "react-native-paper";
+import {
+  SafeAreaView,
+  Text,
+  FlatList,
+  NativeSyntheticEvent,
+  TextInputSubmitEditingEventData
+} from "react-native";
+import { SearchBar } from "react-native-elements";
+import { List } from "react-native-paper";
 
 import { DbHelper } from "./DbHelper";
 import { Dictionary } from "./models/Word";
+import NullableText from "./components/NullableText";
 
 interface AppProps {}
 
 interface AppState {
   currentQuery: string;
+  allWords: Dictionary[];
   words: Dictionary[];
   isLoaded: boolean;
 }
@@ -19,12 +28,14 @@ class App extends React.Component<AppProps, AppState> {
 
     this.state = {
       currentQuery: "",
+      allWords: [],
       words: [],
       isLoaded: false
     };
 
     this.handleSearchChange = this.handleSearchChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleResetSearch = this.handleResetSearch.bind(this);
   }
 
   async componentDidMount() {
@@ -43,21 +54,17 @@ class App extends React.Component<AppProps, AppState> {
   renderWordList({ item }: { item: Dictionary }) {
     return (
       <List.Accordion title={item.word}>
-        {!!item.englishDefinition && (
-          <Text>{`English Definition: ${item.englishDefinition}`}</Text>
-        )}
-        {!!item.l2Definition && (
-          <Text>{`L2 Definition: ${item.l2Definition}`}</Text>
-        )}
-        {!!item.notes && <Text>{`Notes: ${item.notes}`}</Text>}
-        {!!item.examples && <Text>{`Examples: ${item.examples}`}</Text>}
-        {!!item.activeVerb && <Text>{`Active Verb: ${item.activeVerb}`}</Text>}
-        {!!item.passiveVerb && (
-          <Text>{`Passive Verb: ${item.passiveVerb}`}</Text>
-        )}
+        <NullableText text={item.englishDefinition} />
+        <NullableText text={item.l2Definition} />
+        <NullableText text={item.notes} />
+        <NullableText text={item.examples} />
+        <NullableText text={item.activeVerb} />
+        <NullableText text={item.passiveVerb} />
       </List.Accordion>
     );
   }
+
+  handleToggleSubtitle() {}
 
   handleSearchChange(query: string) {
     this.setState({
@@ -65,17 +72,33 @@ class App extends React.Component<AppProps, AppState> {
     });
   }
 
-  async handleSubmit() {}
+  handleSubmit(event: NativeSyntheticEvent<TextInputSubmitEditingEventData>) {
+    const query = event.nativeEvent.text;
+    const newWords = this.state.words.filter(
+      word => word.word !== null && word.word.includes(query)
+    );
+    this.setState({
+      words: newWords
+    });
+  }
+
+  handleResetSearch() {
+    const { allWords } = this.state;
+    this.setState({
+      words: allWords
+    });
+  }
 
   render() {
     return (
       this.state.isLoaded && (
         <Fragment>
           <SafeAreaView>
-            <Searchbar
+            <SearchBar
               placeholder="Search"
               onChangeText={this.handleSearchChange}
               onSubmitEditing={this.handleSubmit}
+              onClear={this.handleResetSearch}
               value={this.state.currentQuery}
             />
             <FlatList
