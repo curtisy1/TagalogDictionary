@@ -43,6 +43,7 @@ class App extends React.Component<AppProps, AppState> {
     const words = await connection.manager.find(Dictionary);
     this.setState({
       words: words,
+      allWords: words,
       isLoaded: true
     });
   }
