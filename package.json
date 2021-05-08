@@ -13,7 +13,7 @@
     "react-native-sqlite-storage": "^4.1.0",
     "react-native-vector-icons": "^6.6.0",
     "reflect-metadata": "^0.1.13",
-    "typeorm": "^0.2.20"
+    "typeorm": "^0.2.25"
   },
   "devDependencies": {
     "@babel/core": "7.7.2",
